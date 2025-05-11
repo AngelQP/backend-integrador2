@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Documentos\**" />
+    <Compile Remove="FileBlob\**" />
+    <Compile Remove="GestionVentasRegister\**" />
+    <Compile Remove="GestionVentas\**" />
+    <EmbeddedResource Remove="Documentos\**" />
+    <EmbeddedResource Remove="FileBlob\**" />
+    <EmbeddedResource Remove="GestionVentasRegister\**" />
+    <EmbeddedResource Remove="GestionVentas\**" />
+    <None Remove="Documentos\**" />
+    <None Remove="FileBlob\**" />
+    <None Remove="GestionVentasRegister\**" />
+    <None Remove="GestionVentas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Domain\Bigstick.BuildingBlocks.Domain.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\ObjectStick\Bigstick.BuildingBlocks.ObjectStick.csproj" />
+    <ProjectReference Include="..\..\..\Comunications\Application\Ferreteria.Comunications.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO\Tramarsa\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Repository\" />
+  </ItemGroup>
+
+</Project>
