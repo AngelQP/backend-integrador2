@@ -1,7 +1,9 @@
 ﻿using Ferreteria.GestionVentas.API.Modules.Seguridad.Requests;
 using Ferreteria.Modules.GestionVentas.Application.Contract;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.ForgotPassword;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.Login;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.ResetPassword;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +49,18 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
             CrearUsuarioCommand command = new CrearUsuarioCommand(request.Sociedad, request.Usuario, request.Correo, request.Nombre, request.ApellidoPaterno, request.ApellidoMaterno, request.Telefono, request.Contrasenia, request.ConfirmarContrasenia);
 
             return Ok(await _seguridad.ExecuteCommandAsync(command));
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<ActionResult> AuthForgotPassword(ForgotPasswordRequest request)
+        {
+            return Ok(await _seguridad.ExecuteCommandAsync(new ForgotPasswordCommand(request.Correo)));
+        }
+
+        [HttpPost("reset-password")]
+        public async Task<ActionResult> AuthResetPassword(ResetPasswordRequest request)
+        {
+            return Ok(await _seguridad.ExecuteCommandAsync(new ResetPasswordCommand(request.Correo, request.OTP, request.NuevaContrasenia, request.ConfirmarContrasenia)));
         }
     }
 }

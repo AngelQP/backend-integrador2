@@ -11,6 +11,10 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Repository
     {
         Task<int> CrearUsuario(CrearUsuarioRequest request);
         Task<string> ValidarUsuarioOCorreo(string usuario, string correo);
-        Task<UsuarioDTO> GetUsuarioAsync(string usuario);
+        Task<UsuarioDTO> ObtenerUsuarioAsync(string usuario);
+        Task<int> GuardarOTP(GuardarOTPRequest request);
+        Task<ObtenerCodigoVerificacionDTO> ObtenerCodigoVerificacion(string correo);
+        Task<int> ActualizarContraseniaUsuario(int id, string contrasenia, string usuario);
+        Task<int> ActualizarCodigoVerificacion(int id, string usuario);
     }
 }

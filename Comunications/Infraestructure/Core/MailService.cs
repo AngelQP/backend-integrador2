@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferreteria.Comunications.Application.Core.Mail;
 using Ferreteria.Comunications.Application.Core.Mail.DTO;
+using Bigstick.BuildingBlocks.Application.Response;
 
 namespace Ferreteria.Comunications.Infrastructure.Core
 {
@@ -20,11 +21,19 @@ namespace Ferreteria.Comunications.Infrastructure.Core
             this._httpClient = httpClientService;
             this._urlBase = urlBase;
         }
-        public async Task<SendResponse> Send(MailMessage request)
+
+        public async Task<RequestResult> Send(EmailRequest request)
         {
             return await _httpClient
-                       .PostOkAsync<SendResponse>($"{_urlBase}send", request);
+                       .PostOkAsync<RequestResult>($"{_urlBase}Send", request);
         }
+
+
+        //public async Task<SendResponse> Send(MailMessage request)
+        //{
+        //    return await _httpClient
+        //               .PostOkAsync<SendResponse>($"{_urlBase}send", request);
+        //}
 
         public async Task<string> Version()
         {

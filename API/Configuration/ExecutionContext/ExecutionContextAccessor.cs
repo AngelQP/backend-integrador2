@@ -30,6 +30,22 @@ namespace Ferreteria.GestionVentas.API.Configuration.ExecutionContext
                 throw new ApplicationException("User context is not available");
             }
         }
+
+        public string UserName
+        {
+            get
+            {
+                if (_httpContextAccessor
+                    .HttpContext?
+                    .User != null)
+                {
+                    var claimUserName = _httpContextAccessor.HttpContext.User?.Claims.FirstOrDefault(x => x.Type == "userName");
+                    if (claimUserName != null) return claimUserName.Value;
+                }
+                return null;
+            }
+        }
+
         public string CodigoSap
         {
             get

@@ -6,6 +6,8 @@ namespace Bigstick.BuildingBlocks.Application
     {
         string UserId { get; }
 
+        string UserName { get; }
+
         string CodigoSap { get; }
 
         Guid CorrelationId { get; }

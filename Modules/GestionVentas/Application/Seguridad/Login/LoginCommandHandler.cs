@@ -28,7 +28,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.Login
 
         public async Task<RequestResult> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var usuario = await _seguridadRepository.GetUsuarioAsync(request.Usuario);
+            var usuario = await _seguridadRepository.ObtenerUsuarioAsync(request.Usuario);
 
             if (usuario == null || !_commonService.VerifyPassword(request.Contrasenia, usuario.Contrasenia))
                 return RequestResult.WithError("El nombre de usuario o la contraseña son incorrectos.");

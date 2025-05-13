@@ -61,7 +61,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
             }
         }
 
-        public async Task<UsuarioDTO> GetUsuarioAsync(string usuario)
+        public async Task<UsuarioDTO> ObtenerUsuarioAsync(string usuario)
         {
             using (var connection = sqlConnectionFactory.CreateNewConnection())
             {
@@ -71,6 +71,62 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@usuario", usuario);
 
                 return await connection.QueryFirstOrDefaultAsync<UsuarioDTO>("[dbo].[usp_ObtenerUsuarioPorNombreOCorreo]", parameters, transaction, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<int> GuardarOTP(GuardarOTPRequest request)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+                var parameters = new DynamicParameters();
+                parameters.Add("@idUsuario", request.IdUsuario);
+                parameters.Add("@correo", request.Correo);
+                parameters.Add("@codigo", request.Codigo);
+                parameters.Add("@expiracion", request.Expiracion);
+                parameters.Add("@usuario", request.Usuario);
+
+                return await connection.ExecuteAsync("[dbo].[usp_CrearCodigoVerificacion]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<ObtenerCodigoVerificacionDTO> ObtenerCodigoVerificacion(string correo)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@correo", correo);
+
+                return await connection.QueryFirstOrDefaultAsync<ObtenerCodigoVerificacionDTO>("[dbo].[usp_ObtenerCodigoVerificacion]", parameters, transaction, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<int> ActualizarContraseniaUsuario(int id, string contrasenia, string usuario)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+                var parameters = new DynamicParameters();
+                parameters.Add("@id", id);
+                parameters.Add("@contrasenia", contrasenia);
+                parameters.Add("@usuario", usuario);
+
+                return await connection.ExecuteAsync("[dbo].[usp_ActualizarContraseniaUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<int> ActualizarCodigoVerificacion(int id, string usuario)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+                var parameters = new DynamicParameters();
+                parameters.Add("@id", id);
+                parameters.Add("@usuario", usuario);
+
+                return await connection.ExecuteAsync("[dbo].[usp_ActualizarCodigoVerificacion]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
     }

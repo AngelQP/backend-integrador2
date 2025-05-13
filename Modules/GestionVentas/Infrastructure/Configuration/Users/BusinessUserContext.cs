@@ -19,6 +19,6 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Configuration.Users
         }
         public BusinessId BusinessId => BusinessId.Create("301", "3013");
 
-        public UserId UserId => new UserId(_executionContextAccessor.UserId, _executionContextAccessor.CodigoSap);
+        public UserId UserId => new UserId(_executionContextAccessor.UserId, _executionContextAccessor.UserName, _executionContextAccessor.CodigoSap);
     }
 }
