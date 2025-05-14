@@ -1,10 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using Bigstick.BuildingBlocks.HttpClient.OData;
 using Ferreteria.Modules.GestionVentas.Application.Contract;
 using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
+using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
+using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NPOI.SS.Formula.Functions;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ferreteria.GestionVentas.API.Modules.Productos
 {
@@ -56,6 +62,15 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
             );
 
             return Ok(await _producto.ExecuteCommandAsync(command));
+        }
+        [HttpGet("producto")]
+        [Produces(typeof(GetProductoDTO))]
+        public async Task<IActionResult> ProductoGet([FromQuery] string? nombre, [FromQuery] string? categoria, [FromQuery] string? proveedor, [FromQuery] int startAt, [FromQuery] int? maxResult, CancellationToken cancellationToken)
+        {
+            var filtro = new GetProductoFilters(nombre, categoria, proveedor);
+            var query = new QueryPagination<GetProductoDTO, GetProductoFilters>(startAt, maxResult, filtro);
+
+            return Ok(await _producto.ExecuteQueryAsync(query));
         }
     }
 }
