@@ -1,13 +1,10 @@
-﻿using Ferreteria.Modules.GestionVentas.Application.Contract;
+﻿using System.Threading.Tasks;
+using Ferreteria.Modules.GestionVentas.Application.Contract;
 using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
-using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using NPOI.SS.Formula.Functions;
-using System;
-using System.Threading.Tasks;
 
 namespace Ferreteria.GestionVentas.API.Modules.Productos
 {
@@ -38,7 +35,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
         [HttpPost("producto")]
         public async Task<ActionResult> ProductoCreate(ProductoRequest request)
         {
-            
+
             var command = new CrearProductoComand(
                 request.Nombre,
                 request.Descripcion,
