@@ -21,8 +21,4 @@
     <!--<ProjectReference Include="..\Domain\Ferreteria.Modules.GestionVentas.Domain.csproj" />-->
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Producto\GetProducto\" />
-  </ItemGroup>
-
 </Project>
