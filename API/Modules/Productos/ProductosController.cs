@@ -63,7 +63,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
 
             return Ok(await _producto.ExecuteCommandAsync(command));
         }
-        [HttpGet("procucto")]
+        [HttpGet("producto")]
         [Produces(typeof(GetProductoDTO))]
         public async Task<IActionResult> ProductoGet([FromQuery] string? nombre, [FromQuery] string? categoria, [FromQuery] string? proveedor, [FromQuery] int startAt, [FromQuery] int? maxResult, CancellationToken cancellationToken)
         {
