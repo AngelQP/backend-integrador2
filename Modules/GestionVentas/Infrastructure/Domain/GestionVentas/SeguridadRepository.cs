@@ -129,5 +129,24 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 return await connection.ExecuteAsync("[dbo].[usp_ActualizarCodigoVerificacion]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
+
+        public async Task<(IEnumerable<UserDTO>, int)> UsersGet(string nombre, int startAt, int maxResult)
+        {
+            using (var _connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@nombre", nombre);
+                //--
+                parameters.Add("@startAt", startAt);
+                parameters.Add("@maxResult", maxResult);
+
+                parameters.Add("@total", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                var query = await _connection.QueryAsync<UserDTO>("[dbo].[usp_ObtenerUsuarios]", parameters, commandType: CommandType.StoredProcedure);
+                var total = parameters.Get<int>("@total");
+
+                return (query, total);
+            }
+        }
     }
 }
