@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using NPOI.SS.Formula.Functions;
 using System;
 using System.Threading.Tasks;
+using Ferreteria.Modules.GestionVentas.Application.Cliente.GetCliente;
+using System.Threading;
 
 namespace Ferreteria.GestionVentas.API.Modules.Clientes
 {
@@ -17,14 +19,14 @@ namespace Ferreteria.GestionVentas.API.Modules.Clientes
     {
         private readonly IConfiguration _configuration;
         private readonly IWebHostEnvironment _env;
-        private readonly IGestionVentasModule _Cliente;
+        private readonly IGestionVentasModule _cliente;
 
 
-        public ClientesController(IConfiguration configuration, IWebHostEnvironment env, IGestionVentasModule Cliente)
+        public ClientesController(IConfiguration configuration, IWebHostEnvironment env, IGestionVentasModule cliente)
         {
             _configuration = configuration;
             _env = env;
-            _Cliente = Cliente;
+            _cliente = cliente;
         }
 
         [AllowAnonymous]
@@ -51,7 +53,16 @@ namespace Ferreteria.GestionVentas.API.Modules.Clientes
                 request.FechaRegistro
             );
 
-            return Ok(await _Cliente.ExecuteCommandAsync(command));
+            return Ok(await _cliente.ExecuteCommandAsync(command));
+        }
+        [HttpGet("cliente")]
+        [Produces(typeof(GetClienteDTO))]
+        public async Task<IActionResult> ClienteGet([FromQuery] string? nombre, [FromQuery] string? apellidos, [FromQuery] string? dni,[FromQuery] string? ruc, [FromQuery] int startAt, [FromQuery] int? maxResult, CancellationToken cancellationToken)
+        {
+            var filtro = new GetClienteFilters(nombre, apellidos, dni, ruc);
+            var query = new QueryPagination<GetClienteDTO, GetClienteFilters>(startAt, maxResult, filtro);
+
+            return Ok(await _cliente.ExecuteQueryAsync(query));
         }
     }
 }
