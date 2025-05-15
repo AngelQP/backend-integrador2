@@ -49,7 +49,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.Login
             else
                 refreshExpiration = DateTime.UtcNow.AddDays(7);
 
-            //await _commonService.SaveRefreshTokenAsync(usuario._id.ToString(), refreshToken, refreshExpiration);
+            //await _commonService.SaveRefreshTokenAsync(usuario.id, refreshToken, refreshExpiration);
 
             token.RefreshToken = refreshToken;
             var userDto = MapToUserDto(usuario);
