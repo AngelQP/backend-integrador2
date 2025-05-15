@@ -26,7 +26,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto
             string proveedor,
             string codigoBarras,
             string usuarioCreacion,
-            DateTime fechaCreacion)
+            DateTime fechaCreacion,
+            bool estado)
         {
             Nombre = nombre;
             Descripcion = descripcion;
@@ -44,6 +45,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto
             CodigoBarras = codigoBarras;
             UsuarioCreacion = usuarioCreacion;
             FechaCreacion = fechaCreacion;
+            Estado = estado;
         }
 
         public string Nombre { get; set; }
@@ -62,5 +64,6 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto
         public string CodigoBarras { get; set; }
         public string UsuarioCreacion { get; set; }
         public DateTime FechaCreacion { get; set; }
+        public bool Estado { get; set; }
     }
 }

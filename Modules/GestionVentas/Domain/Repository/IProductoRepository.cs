@@ -10,5 +10,6 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Repository
     public interface IProductoRepository
     {
         Task<int> CrearProducto(CrearProductoRequest request);
+        Task<(IEnumerable<ProductoDTO>, int)> ProductoGet(string nombre, string categoria, string proveedor, int startAt, int maxResult);
     }
 }

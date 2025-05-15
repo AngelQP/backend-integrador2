@@ -49,7 +49,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto
                 Proveedor = request.Proveedor,
                 CodigoBarras = request.CodigoBarras,
                 UsuarioCreacion = usuario,
-                FechaCreacion = DateTime.UtcNow
+                FechaCreacion = DateTime.UtcNow,
+                Estado = request.Estado,
             });
 
             return RequestResult.Success();

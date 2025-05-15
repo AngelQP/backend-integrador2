@@ -60,5 +60,25 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 );
             }
         }
+        public async Task<(IEnumerable<ProductoDTO>, int)> ProductoGet(string nombre, string categoria, string proveedor, int startAt, int maxResult)
+        {
+            using (var _connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@nombre", string.IsNullOrWhiteSpace(nombre) ? null : nombre);
+                parameters.Add("@categoria", string.IsNullOrWhiteSpace(categoria) ? null : categoria);
+                parameters.Add("@proveedor", string.IsNullOrWhiteSpace(proveedor) ? null : proveedor);
+                //--
+                parameters.Add("@startAt", startAt);
+                parameters.Add("@maxResult", maxResult);
+
+                parameters.Add("@total", dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                var query = await _connection.QueryAsync<ProductoDTO>("[dbo].[usp_ObtenerProductos]", parameters, commandType: CommandType.StoredProcedure);
+                var total = parameters.Get<int>("@total");
+
+                return (query, total);
+            }
+        }
     }
 }

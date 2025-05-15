@@ -11,49 +11,37 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferreteria.Modules.GestionVentas.Application.Contract;
+using Bigstick.BuildingBlocks.Application.Response;
+using Ferreteria.Comunications.Application.Core.Mail;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
+using Ferreteria.Modules.GestionVentas.Domain.Repository;
+using Ferreteria.Modules.GestionVentas.Domain.Servicios;
+using Ferreteria.Modules.GestionVentas.Domain.Users;
 
 namespace Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto
 {
-    public class GetProductoQueryHandler : IQueryHandler<QueryPagination<GetProductoDTO, GetProductoFilters>, GetProductoDTO>
+    public class GetProductoQueryHandler : IQueryHandler<GetProductoFilters, RequestResult>
     {
-        private readonly ISqlConnectionFactory _connectionFactory;
-    public GetProductoQueryHandler(ISqlConnectionFactory connectionFactory)
-    {
-        _connectionFactory = connectionFactory;
-    }
-    public async Task<GetProductoDTO> Handle(QueryPagination<GetProductoDTO, GetProductoFilters> request, CancellationToken cancellationToken)
-    {
-        return await GetProductoAsync(request, cancellationToken);
-    }
+        private readonly IProductoRepository _productoRepository;
+        private readonly ICommonService _commonService;
+        private readonly IMailService _mailService;
+        private readonly IUserContext _userContext;
 
-    private async Task<GetProductoDTO> GetProductoAsync(QueryPagination<GetProductoDTO, GetProductoFilters> request, CancellationToken cancellationToken)
-    {
-            using (var _connection = _connectionFactory.CreateNewConnection())
-            {
-                var parameters = new DynamicParameters();
-                parameters.Add("@Nombre", request.Filter.Nombre);
-                parameters.Add("@Categoria", request.Filter.Categoria);
-                parameters.Add("@Proveedor", request.Filter.Proveedor);
+        public GetProductoQueryHandler(IProductoRepository productoRepository, ICommonService commonService, IMailService mailService, IUserContext userContext)
+        {
+            _productoRepository = productoRepository;
+            _commonService = commonService;
+            _mailService = mailService;
+            _userContext = userContext;
+        }
 
-                // Ejecutar la consulta y obtener tanto los productos como el total
-                var multi = await _connection.QueryMultipleAsync(
-                    "usp_ObtenerProductos",
-                    parameters,
-                    commandType: CommandType.StoredProcedure
-                );
+        public async Task<RequestResult> Handle(GetProductoFilters request, CancellationToken cancellationToken)
+        {
+            var result = await _productoRepository.ProductoGet(request.Nombre, request.Categoria, request.Proveedor, request.StartAt, request.MaxResult);
 
-                // Obtener los productos
-                var query = multi.Read<GetProductoDTO.ProductoItem>();
+            var response = new GetProductoDTO(result.Item1, request.StartAt, request.MaxResult, result.Item2);
 
-                // Obtener el total de registros
-                var total = multi.Read<int>().FirstOrDefault();
-
-                return new GetProductoDTO
-                {
-                    Items = query,
-                    Total = total
-                };
-            }
+            return RequestResult.Success(response);
         }
     }
 }

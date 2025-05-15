@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
+using Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,30 +10,17 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto
 {
     public class GetProductoDTO
     {
-        public class ProductoItem
+        public GetProductoDTO(IEnumerable<ProductoDTO> producto, int startAt, int maxResult, int total)
         {
-            public int Id { get; set; }
-            public string? Nombre { get; set; }
-            public string? Descripcion { get; set; }
-            public string? Sku { get; set; }
-            public string? Marca { get; set; }
-            public string? Modelo { get; set; }
-            public string? Unidad { get; set; }
-            public string? Categoria { get; set; }
-            public string? Subcategoria { get; set; }
-            public string? ImpuestoTipo { get; set; }
-            public decimal Precio { get; set; }
-            public int Cantidad { get; set; }
-            public decimal Costo { get; set; }
-            public string? Proveedor { get; set; }
-            public string? CodigoBarras { get; set; }
-            public string? UsuarioCreacion { get; set; }
-            public DateTime FechaCreacion { get; set; }
+            Producto = producto;
+            StartAt = startAt;
+            MaxResult = maxResult;
+            Total = total;
         }
-        public IEnumerable<ProductoItem> Items { get; set; }
-        public int StartAt { get; set; }
-        public int MaxResult { get; set; }
-        public int Total { get; set; }
-    }
 
+        public IEnumerable<ProductoDTO> Producto { get; }
+        public int StartAt { get; }
+        public int MaxResult { get; }
+        public int Total { get; }
+    }
 }

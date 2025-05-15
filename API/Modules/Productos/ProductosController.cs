@@ -2,6 +2,7 @@
 using Ferreteria.Modules.GestionVentas.Application.Contract;
 using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -58,19 +59,25 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
                 request.Proveedor,
                 request.CodigoBarras,
                 request.UsuarioCreacion,
-                request.FechaCreacion
+                request.FechaCreacion,
+                request.Estado
             );
 
             return Ok(await _producto.ExecuteCommandAsync(command));
         }
         [HttpGet("producto")]
-        [Produces(typeof(GetProductoDTO))]
-        public async Task<IActionResult> ProductoGet([FromQuery] string? nombre, [FromQuery] string? categoria, [FromQuery] string? proveedor, [FromQuery] int startAt, [FromQuery] int? maxResult, CancellationToken cancellationToken)
+        public async Task<IActionResult> ProductoGet(
+            [FromQuery] string? nombre,
+            [FromQuery] string? categoria,
+            [FromQuery] string? proveedor,
+            [FromQuery] int startAt,
+            [FromQuery] int? maxResult,
+            CancellationToken cancellationToken)
         {
-            var filtro = new GetProductoFilters(nombre, categoria, proveedor);
-            var query = new QueryPagination<GetProductoDTO, GetProductoFilters>(startAt, maxResult, filtro);
-
-            return Ok(await _producto.ExecuteQueryAsync(query));
+            int resultLimit = maxResult ?? 10; // Valor por defecto si es null
+            var filters = new GetProductoFilters(nombre, categoria, proveedor, startAt, resultLimit);
+            return Ok(await _producto.ExecuteQueryAsync(filters));
         }
+
     }
 }
