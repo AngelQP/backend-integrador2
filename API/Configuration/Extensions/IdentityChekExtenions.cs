@@ -1,9 +1,11 @@
 ﻿using IdentityServer4.AccessTokenValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Ferreteria.GestionVentas.API.Configuration.Extensions
@@ -18,14 +20,16 @@ namespace Ferreteria.GestionVentas.API.Configuration.Extensions
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = authority;
-                    options.Audience = audience;
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        NameClaimType = "id",
-                        RoleClaimType = "role"
-                    };
-
+                    //options.TokenValidationParameters = new TokenValidationParameters
+                    //{
+                    //    ValidateIssuer = true,
+                    //    ValidateAudience = true,
+                    //    ValidateLifetime = true,
+                    //    ValidateIssuerSigningKey = true,
+                    //    ValidIssuer = configuration["Authentication:Issuer"],
+                    //    ValidAudience = configuration["Authentication:Audiencee"],
+                    //    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:Key"]))
+                    //};
                 });
         }
     }

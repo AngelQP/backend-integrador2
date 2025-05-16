@@ -19,7 +19,9 @@ namespace Ferreteria.GestionVentas.API.Configuration.Extensions
 
             services.AddMvc(opt =>
             {
-                var policy = ScopePolicy.Create(scope);
+                //var policy = new AuthorizationPolicyBuilder()
+                //            .RequireAuthenticatedUser()
+                //            .Build();
                 //opt.Filters.Add(new AuthorizeFilter(policy));
             })
                 .AddNewtonsoftJson(options =>

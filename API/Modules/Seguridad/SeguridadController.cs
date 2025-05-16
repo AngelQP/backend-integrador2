@@ -44,6 +44,8 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
             return Ok(await _seguridad.ExecuteCommandAsync(command));
         }
 
+        #region APIS DE PRUEBA
+
         [HttpPost("usuario")]
         public async Task<ActionResult> UsuarioCreate(UserCreateRequest request)
         {
@@ -57,6 +59,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
         {
             return Ok(await _seguridad.ExecuteQueryAsync(new UsersGetQuery(nombre, startAt, maxResult)));
         }
+        #endregion
 
         [HttpPost("forgot-password")]
         public async Task<ActionResult> AuthForgotPassword(ForgotPasswordRequest request)
