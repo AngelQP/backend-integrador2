@@ -8,7 +8,7 @@ namespace Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad
 {
     public class UsuarioDTO
     {
-        public int Id {  get; set; }
+        public int IdUsuario {  get; set; }
         public string Sociedad {  get; set; }
         public string Usuario {  get; set; }
         public string Correo {  get; set; }
@@ -17,5 +17,6 @@ namespace Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad
         public string ApellidoMaterno {  get; set; }
         public string Telefono {  get; set; }
         public string Contrasenia {  get; set; }
+        public string Rol {  get; set; }
     }
 }

@@ -29,5 +29,6 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.Login
         public string ApellidoPaterno { get; set; }
         public string ApellidoMaterno { get; set; }
         public string Telefono { get; set; }
+        public string Rol { get; set; }
     }
 }

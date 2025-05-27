@@ -58,6 +58,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
                 ApellidoMaterno = request.ApellidoMaterno,
                 Telefono = request.Telefono,
                 Contrasenia = hashedPassword,
+                Rol = request.Rol,
                 UsuarioCreacion = usuario
             });
 

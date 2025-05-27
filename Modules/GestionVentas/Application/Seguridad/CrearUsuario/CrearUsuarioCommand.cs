@@ -10,7 +10,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
 {
     public class CrearUsuarioCommand : CommandBase<RequestResult>
     {
-        public CrearUsuarioCommand(string sociedad, string usuario, string correo, string nombre, string apellidoPaterno, string apellidoMaterno, string telefono, string contrasenia, string confirmarContrasenia)
+        public CrearUsuarioCommand(string sociedad, string usuario, string correo, string nombre, string apellidoPaterno, string apellidoMaterno, string telefono, string contrasenia, string rol, string confirmarContrasenia)
         {
             Sociedad = sociedad;
             Usuario = usuario;
@@ -20,6 +20,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
             ApellidoMaterno = apellidoMaterno;
             Telefono = telefono;
             Contrasenia = contrasenia;
+            Rol = rol;
             ConfirmarContrasenia = confirmarContrasenia;
         }
 
@@ -31,6 +32,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
         public string ApellidoMaterno { get; set; }
         public string Telefono { get; set; }
         public string Contrasenia { get; set; }
+        public string Rol { get; set; }
         public string ConfirmarContrasenia { get; set; }
     }
 }

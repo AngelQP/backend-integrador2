@@ -43,7 +43,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.ForgotPassword
                 return RequestResult.WithError("Hubo un problema al enviar el código. Verifica tu correo e inténtalo nuevamente.");
 
             var otp = GenerateOtp();
-            await _seguridadRepository.GuardarOTP(new GuardarOTPRequest { IdUsuario = usuario.Id, Correo = request.Correo, Codigo = otp, Expiracion = DateTime.UtcNow.AddMinutes(10) });
+            await _seguridadRepository.GuardarOTP(new GuardarOTPRequest { IdUsuario = usuario.IdUsuario, Correo = request.Correo, Codigo = otp, Expiracion = DateTime.UtcNow.AddMinutes(10) });
 
             await EnviarEmail(request.Correo, PrepararNotificacion(otp, usuario));
 

@@ -80,8 +80,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Servicios
                 new Claim("full_name", $"{usuario.Nombre} {usuario.ApellidoPaterno} {usuario.ApellidoMaterno}"),
                 new Claim("iat", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
                 new Claim("nbf", ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-                new Claim("sub", usuario.Id.ToString()),
-                new Claim("oid", usuario.Id.ToString()),
+                new Claim("sub", usuario.IdUsuario.ToString()),
+                new Claim("oid", usuario.IdUsuario.ToString()),
                 new Claim("business", usuario.Sociedad)
             };
         }

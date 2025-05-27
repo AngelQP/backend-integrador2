@@ -78,7 +78,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.Login
                 ApellidoPaterno = usuario.ApellidoPaterno,
                 ApellidoMaterno = usuario.ApellidoMaterno,
                 Telefono = usuario.Telefono,
-                Sociedad = usuario.Sociedad
+                Sociedad = usuario.Sociedad,
+                Rol = usuario.Rol,
             };
         }
     }

@@ -10,6 +10,7 @@
         public string ApellidoMaterno { get; set; }
         public string Telefono { get; set; }
         public string Contrasenia { get; set; }
+        public string Rol { get; set; }
         public string ConfirmarContrasenia { get; set; }
     }
 }

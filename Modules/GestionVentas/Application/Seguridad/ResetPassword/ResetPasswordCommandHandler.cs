@@ -52,8 +52,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.ResetPassword
 
             usuarioObtenido.Contrasenia = _commonService.HashPassword(request.NuevaContrasenia);
 
-            await _seguridadRepository.ActualizarContraseniaUsuario(usuarioObtenido.Id, usuarioObtenido.Contrasenia, usuario);
-            await _seguridadRepository.ActualizarCodigoVerificacion(otpValidationResult.Data.Id, usuario);
+            await _seguridadRepository.ActualizarContraseniaUsuario(usuarioObtenido.IdUsuario, usuarioObtenido.Contrasenia, usuario);
+            await _seguridadRepository.ActualizarCodigoVerificacion(otpValidationResult.Data.IdUsuario, usuario);
 
             return new RequestResult();
         }

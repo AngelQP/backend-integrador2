@@ -49,7 +49,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
         [HttpPost("usuario")]
         public async Task<ActionResult> UsuarioCreate(UserCreateRequest request)
         {
-            CrearUsuarioCommand command = new CrearUsuarioCommand(request.Sociedad, request.Usuario, request.Correo, request.Nombre, request.ApellidoPaterno, request.ApellidoMaterno, request.Telefono, request.Contrasenia, request.ConfirmarContrasenia);
+            CrearUsuarioCommand command = new CrearUsuarioCommand(request.Sociedad, request.Usuario, request.Correo, request.Nombre, request.ApellidoPaterno, request.ApellidoMaterno, request.Telefono, request.Contrasenia, request.Rol, request.ConfirmarContrasenia);
 
             return Ok(await _seguridad.ExecuteCommandAsync(command));
         }

@@ -8,7 +8,7 @@ namespace Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad
 {
     public class ObtenerCodigoVerificacionDTO
     {
-        public int Id { get; set; }
+        public int IdCodigoVerificacion { get; set; }
         public int IdUsuario { get; set; }
         public string Correo { get; set; }
         public string Codigo { get; set; }

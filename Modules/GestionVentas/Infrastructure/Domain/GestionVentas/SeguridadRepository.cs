@@ -40,9 +40,10 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@apellidoMaterno", request.ApellidoMaterno);
                 parameters.Add("@telefono", request.Telefono);
                 parameters.Add("@contrasenia", request.Contrasenia);
+                parameters.Add("@rol", request.Rol);
                 parameters.Add("@usuarioCreacion", request.UsuarioCreacion);
 
-                return await connection.ExecuteAsync("[dbo].[usp_CrearUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+                return await connection.ExecuteAsync("[fer].[usp_CrearUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
 
@@ -55,7 +56,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@usuario", usuario);
                 parameters.Add("@correo", correo);
 
-                var resultado = await connection.QuerySingleAsync<string>("[dbo].[usp_ValidarUsuarioOCorreo]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+                var resultado = await connection.QuerySingleAsync<string>("[fer].[usp_ValidarUsuarioOCorreo]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
 
                 return resultado;
             }
@@ -70,7 +71,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 var parameters = new DynamicParameters();
                 parameters.Add("@usuario", usuario);
 
-                return await connection.QueryFirstOrDefaultAsync<UsuarioDTO>("[dbo].[usp_ObtenerUsuarioPorNombreOCorreo]", parameters, transaction, commandType: CommandType.StoredProcedure);
+                return await connection.QueryFirstOrDefaultAsync<UsuarioDTO>("[fer].[usp_ObtenerUsuarioPorNombreOCorreo]", parameters, transaction, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -86,7 +87,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@expiracion", request.Expiracion);
                 parameters.Add("@usuario", request.Usuario);
 
-                return await connection.ExecuteAsync("[dbo].[usp_CrearCodigoVerificacion]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+                return await connection.ExecuteAsync("[fer].[usp_CrearCodigoVerificacion]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
 
@@ -99,7 +100,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 var parameters = new DynamicParameters();
                 parameters.Add("@correo", correo);
 
-                return await connection.QueryFirstOrDefaultAsync<ObtenerCodigoVerificacionDTO>("[dbo].[usp_ObtenerCodigoVerificacion]", parameters, transaction, commandType: CommandType.StoredProcedure);
+                return await connection.QueryFirstOrDefaultAsync<ObtenerCodigoVerificacionDTO>("[fer].[usp_ObtenerCodigoVerificacion]", parameters, transaction, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -113,7 +114,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@contrasenia", contrasenia);
                 parameters.Add("@usuario", usuario);
 
-                return await connection.ExecuteAsync("[dbo].[usp_ActualizarContraseniaUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+                return await connection.ExecuteAsync("[fer].[usp_ActualizarContraseniaUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
 
@@ -126,7 +127,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@id", id);
                 parameters.Add("@usuario", usuario);
 
-                return await connection.ExecuteAsync("[dbo].[usp_ActualizarCodigoVerificacion]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+                return await connection.ExecuteAsync("[fer].[usp_ActualizarCodigoVerificacion]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
 
@@ -142,7 +143,7 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
 
                 parameters.Add("@total", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                var query = await _connection.QueryAsync<UserDTO>("[dbo].[usp_ObtenerUsuarios]", parameters, commandType: CommandType.StoredProcedure);
+                var query = await _connection.QueryAsync<UserDTO>("[fer].[usp_ObtenerUsuarios]", parameters, commandType: CommandType.StoredProcedure);
                 var total = parameters.Get<int>("@total");
 
                 return (query, total);

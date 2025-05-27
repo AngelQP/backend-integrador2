@@ -16,6 +16,7 @@ namespace Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad
         public string ApellidoMaterno {  get; set; }
         public string Telefono {  get; set; }
         public string Contrasenia {  get; set; }
+        public string Rol {  get; set; }
         public string UsuarioCreacion {  get; set; }
     }
 }
