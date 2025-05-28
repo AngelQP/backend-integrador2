@@ -39,7 +39,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
             if (!_commonService.IsValidEmail(request.Correo))
                 return RequestResult.WithError("El correo electrónico no es válido.");
 
-            var resultado = await _seguridadRepository.ValidarUsuarioOCorreo(request.Usuario, request.Correo);
+            var resultado = await _seguridadRepository.ValidarUsuarioOCorreo(null, request.Correo);
 
             if (resultado == "Usuario")
                 return RequestResult.WithError("El nombre de usuario ya está registrado.");
@@ -51,7 +51,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
             var result = await _seguridadRepository.CrearUsuario(new CrearUsuarioRequest
             {
                 Sociedad = request.Sociedad,
-                Usuario = request.Usuario,
+                Usuario = request.Correo,
                 Correo = request.Correo,
                 Nombre = request.Nombre,
                 ApellidoPaterno = request.ApellidoPaterno,
