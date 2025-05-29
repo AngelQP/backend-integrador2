@@ -17,5 +17,6 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Repository
         Task<int> ActualizarContraseniaUsuario(int id, string contrasenia, string usuario);
         Task<int> ActualizarCodigoVerificacion(int id, string usuario);
         Task<(IEnumerable<UserDTO>, int)> UsersGet(string nombre, int startAt, int maxResult);
+        Task<UserDTO> UserGetById(int idUsuario);
     }
 }

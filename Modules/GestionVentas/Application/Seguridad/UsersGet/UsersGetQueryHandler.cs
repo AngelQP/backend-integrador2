@@ -1,6 +1,8 @@
 ﻿using Bigstick.BuildingBlocks.Application.Response;
 using Ferreteria.Comunications.Application.Core.Mail;
 using Ferreteria.Modules.GestionVentas.Application.Configuration.Query;
+using Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad;
+using Ferreteria.Modules.GestionVentas.Domain.Enums;
 using Ferreteria.Modules.GestionVentas.Domain.Repository;
 using Ferreteria.Modules.GestionVentas.Domain.Servicios;
 using Ferreteria.Modules.GestionVentas.Domain.Users;
@@ -31,6 +33,12 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet
         public async Task<RequestResult> Handle(UsersGetQuery request, CancellationToken cancellationToken)
         {
             var result = await _seguridadRepository.UsersGet(request.Nombre, request.StartAt, request.MaxResult);
+
+            foreach (var usuario in result.Item1)
+            {
+                usuario.RolNombre = Enum.Parse<RolUsuario>(usuario.Rol).ToDescripcion();
+                usuario.EstadoNombre = ((EstadoRegistro)usuario.EstadoRegistro).ToDescripcion();
+            }
 
             var response = new UsersGetDTO(result.Item1, request.StartAt, request.MaxResult, result.Item2);
 

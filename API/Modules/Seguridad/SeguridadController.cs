@@ -4,6 +4,7 @@ using Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.ForgotPassword;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.Login;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.ResetPassword;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserGetById;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -58,6 +59,12 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
         public async Task<IActionResult> UsersGet([FromQuery] string nombre, int startAt, int maxResult)
         {
             return Ok(await _seguridad.ExecuteQueryAsync(new UsersGetQuery(nombre, startAt, maxResult)));
+        }
+
+        [HttpGet("usuario/{id}")]
+        public async Task<IActionResult> UsersGetById(int id)
+        {
+            return Ok(await _seguridad.ExecuteQueryAsync(new UserGetByIdQuery(id)));
         }
         #endregion
 

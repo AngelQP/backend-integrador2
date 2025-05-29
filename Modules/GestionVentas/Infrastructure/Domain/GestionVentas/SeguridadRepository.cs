@@ -149,5 +149,18 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 return (query, total);
             }
         }
+
+        public async Task<UserDTO> UserGetById(int idUsuario)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@idUsuario", idUsuario);
+
+                return await connection.QueryFirstOrDefaultAsync<UserDTO>("[fer].[usp_ObtenerUsuarioPorId]", parameters, transaction, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }
