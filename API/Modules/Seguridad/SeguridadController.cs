@@ -4,7 +4,9 @@ using Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.ForgotPassword;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.Login;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.ResetPassword;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserChangeState;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserGetById;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersExportGet;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -47,7 +49,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
 
         #region APIS DE PRUEBA
 
-        [HttpPost("usuario")]
+        [HttpPost("usuarios")]
         public async Task<ActionResult> UsuarioCreate(UserCreateRequest request)
         {
             CrearUsuarioCommand command = new CrearUsuarioCommand(request.Sociedad, request.Usuario, request.Correo, request.Nombre, request.ApellidoPaterno, request.ApellidoMaterno, request.Telefono, request.Contrasenia, request.Rol, request.ConfirmarContrasenia);
@@ -56,15 +58,34 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
         }
 
         [HttpGet("usuarios")]
-        public async Task<IActionResult> UsersGet([FromQuery] string nombre, int startAt, int maxResult)
+        public async Task<IActionResult> UsersGet([FromQuery] string nombre, string rol, int? estado, int startAt, int maxResult)
         {
-            return Ok(await _seguridad.ExecuteQueryAsync(new UsersGetQuery(nombre, startAt, maxResult)));
+            return Ok(await _seguridad.ExecuteQueryAsync(new UsersGetQuery(nombre, rol, estado, startAt, maxResult)));
         }
 
-        [HttpGet("usuario/{id}")]
+        [HttpGet("usuarios/exportar")]
+        public async Task<IActionResult> UsersExportGet([FromQuery] string nombre, string rol, int? estado)
+        {
+            var result = await _seguridad.ExecuteQueryAsync(new UsersExportGetQuery(nombre, rol, estado, 1, 65000));
+
+            var mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+            return new FileContentResult(result, mimeType)
+            {
+                FileDownloadName = "Usuarios.xlsx"
+            };
+        }
+
+        [HttpGet("usuarios/{id}")]
         public async Task<IActionResult> UsersGetById(int id)
         {
             return Ok(await _seguridad.ExecuteQueryAsync(new UserGetByIdQuery(id)));
+        }
+
+        [HttpPut("usuarios/{id}/estado")]
+        public async Task<IActionResult> UserChangeState(int id, UserChangeStateRequest request)
+        {
+            return Ok(await _seguridad.ExecuteCommandAsync(new UserChangeStateCommand(id, request.Estado)));
         }
         #endregion
 

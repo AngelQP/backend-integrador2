@@ -131,12 +131,14 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
             }
         }
 
-        public async Task<(IEnumerable<UserDTO>, int)> UsersGet(string nombre, int startAt, int maxResult)
+        public async Task<(IEnumerable<UserDTO>, int)> UsersGet(string nombre, string rol, int? estado, int startAt, int maxResult)
         {
             using (var _connection = sqlConnectionFactory.CreateNewConnection())
             {
                 var parameters = new DynamicParameters();
                 parameters.Add("@nombre", nombre);
+                parameters.Add("@rol", rol);
+                parameters.Add("@estado", estado);
                 //--
                 parameters.Add("@startAt", startAt);
                 parameters.Add("@maxResult", maxResult);
@@ -160,6 +162,20 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@idUsuario", idUsuario);
 
                 return await connection.QueryFirstOrDefaultAsync<UserDTO>("[fer].[usp_ObtenerUsuarioPorId]", parameters, transaction, commandType: CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<int> CambiarEstadoUsuario(int idUsuario, int estado, string usuario)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+                var parameters = new DynamicParameters();
+                parameters.Add("@idUsuario", idUsuario);
+                parameters.Add("@estado", estado);
+                parameters.Add("@usuario", usuario);
+
+                return await connection.ExecuteAsync("[fer].[usp_CambiarEstadoUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
     }
