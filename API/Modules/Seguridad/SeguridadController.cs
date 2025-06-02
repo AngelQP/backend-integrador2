@@ -8,6 +8,7 @@ using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserChangeState;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserGetById;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersExportGet;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserUpdate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -86,6 +87,12 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
         public async Task<IActionResult> UserChangeState(int id, UserChangeStateRequest request)
         {
             return Ok(await _seguridad.ExecuteCommandAsync(new UserChangeStateCommand(id, request.Estado)));
+        }
+
+        [HttpPut("usuarios/{id}")]
+        public async Task<IActionResult> UserUpdate(int id, [FromBody] UserUpdateRequest request)
+        {
+            return Ok(await _seguridad.ExecuteCommandAsync(new UserUpdateCommand(id, request.Correo, request.Nombre, request.ApellidoPaterno, request.ApellidoMaterno, request.Telefono, request.Rol, request.ActualizarContrasenia, request.Contrasenia, request.ConfirmarContrasenia)));
         }
         #endregion
 

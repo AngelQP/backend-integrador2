@@ -47,12 +47,13 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
             }
         }
 
-        public async Task<string> ValidarUsuarioOCorreo(string usuario, string correo)
+        public async Task<string> ValidarUsuarioOCorreo(string usuario, string correo, int? idUsuario = null)
         {
             using (var connection = sqlConnectionFactory.CreateNewConnection())
             {
                 var transaction = _sqlTransaction.Transaction;
                 var parameters = new DynamicParameters();
+                parameters.Add("@idUsuario", idUsuario);
                 parameters.Add("@usuario", usuario);
                 parameters.Add("@correo", correo);
 
@@ -176,6 +177,27 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@usuario", usuario);
 
                 return await connection.ExecuteAsync("[fer].[usp_CambiarEstadoUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
+            }
+        }
+
+        public async Task<int> ActualizarUsuario(ActualizarUsuarioRequest request)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+                var parameters = new DynamicParameters();
+                parameters.Add("@idUsuario", request.IdUsuario);
+                parameters.Add("@correo", request.Correo);
+                parameters.Add("@nombre", request.Nombre);
+                parameters.Add("@apellidoPaterno", request.ApellidoPaterno);
+                parameters.Add("@apellidoMaterno", request.ApellidoMaterno);
+                parameters.Add("@telefono", request.Telefono);
+                parameters.Add("@actualizarContrasenia", request.ActualizarContrasenia);
+                parameters.Add("@contrasenia", request.Contrasenia);
+                parameters.Add("@rol", request.Rol);
+                parameters.Add("@usuario", request.Usuario);
+
+                return await connection.ExecuteAsync("[fer].[usp_ActualizarUsuario]", parameters, transaction, commandType: System.Data.CommandType.StoredProcedure);
             }
         }
     }

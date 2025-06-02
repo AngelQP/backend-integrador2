@@ -10,7 +10,7 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Repository
     public interface ISeguridadRepository
     {
         Task<int> CrearUsuario(CrearUsuarioRequest request);
-        Task<string> ValidarUsuarioOCorreo(string usuario, string correo);
+        Task<string> ValidarUsuarioOCorreo(string usuario, string correo, int? idUsuario = null);
         Task<UsuarioDTO> ObtenerUsuarioAsync(string usuario);
         Task<int> GuardarOTP(GuardarOTPRequest request);
         Task<ObtenerCodigoVerificacionDTO> ObtenerCodigoVerificacion(string correo);
@@ -19,5 +19,6 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Repository
         Task<(IEnumerable<UserDTO>, int)> UsersGet(string nombre, string rol, int? estado, int startAt, int maxResult);
         Task<UserDTO> UserGetById(int idUsuario);
         Task<int> CambiarEstadoUsuario(int idUsuario, int estado, string usuario);
+        Task<int> ActualizarUsuario(ActualizarUsuarioRequest request);
     }
 }
