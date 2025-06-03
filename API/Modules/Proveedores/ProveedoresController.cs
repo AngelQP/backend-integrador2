@@ -1,4 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Bigstick.BuildingBlocks.HttpClient.OData;
+using Ferreteria.Modules.GestionVentas.Application.Contract;
+using Ferreteria.Modules.GestionVentas.Application.Proveedores.CrearProveedor;
+using Ferreteria.Modules.GestionVentas.Application.Proveedores.GetProveedor;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
+using Ferreteria.Modules.GestionVentas.Domain.DTO.Proveedor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +23,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Proveedores
         {
             _configuration = configuration;
             _env = env;
-            _proveedores = Proveedores;
+            _proveedores = proveedores;
         }
 
         [AllowAnonymous]

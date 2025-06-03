@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bigstick.BuildingBlocks.Application.Response;
+using Ferreteria.Modules.GestionVentas.Application.Contract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ferreteria.Modules.GestionVentas.Application.Proveedor.CrearProveedor
 {
-    public class CrearProveedorCommand
+    public class CrearProveedorCommand : CommandBase<RequestResult>
     {
         public CrearProveedorCommand(string nombre, string ruc, string direccion, string telefono , string correo, string contacto, bool estado, DateTime fecha_registro)
         { 
