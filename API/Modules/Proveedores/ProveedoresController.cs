@@ -8,6 +8,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using NPOI.SS.Formula.Functions;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Ferreteria.GestionVentas.API.Modules.Proveedores
 {
@@ -48,12 +52,14 @@ namespace Ferreteria.GestionVentas.API.Modules.Proveedores
             return Ok(await _proveedores.ExecuteCommandAsync(command));
         }
         [HttpGet("Proveedor")]
-        [Produces(typeof(GetProveedorDTO))]
+        [Produces(typeof(ProveedorGetDTO))]
         public async Task<IActionResult> ProveedorGet([FromQuery] string? nombre, [FromQuery] string? ruc, [FromQuery] int startAt, [FromQuery] int? maxResult, CancellationToken cancellationToken)
         {
-            var filtro = new GetProveedorFilter(nombre, ruc, startAt, maxResult);
-            var query = new GetProveedorQuery<GetProveedorDTO, GetProveedorFilter>(startAt, maxResult, filtro);
+            int resultLimit = maxResult ?? 10;
+            var filters = new GetProveedorFilter(nombre, ruc, startAt, resultLimit);
+            
 
-            return Ok(await _proveedores.ExecuteQueryAsync(query));
+            return Ok(await _proveedores.ExecuteQueryAsync(filters));
         }
+    }
 }
