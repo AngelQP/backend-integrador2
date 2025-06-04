@@ -1,6 +1,7 @@
 ﻿using Bigstick.BuildingBlocks.HttpClient.OData;
 using Ferreteria.Modules.GestionVentas.Application.Contract;
 using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
+using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
@@ -77,6 +78,13 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
             int resultLimit = maxResult ?? 10; // Valor por defecto si es null
             var filters = new GetProductoFilters(nombre, categoria, proveedor, startAt, resultLimit);
             return Ok(await _producto.ExecuteQueryAsync(filters));
+        }
+        [HttpGet("categoriasLite")]
+        public async Task<IActionResult> GetCategoriasLite(CancellationToken cancellationToken)
+        {
+            var filters = new GetCategoriasFilters(); 
+            var result = await _producto.ExecuteQueryAsync(filters);
+            return Ok(result);
         }
 
     }

@@ -2,6 +2,7 @@
 using Bigstick.BuildingBlocks.Infrastructure;
 using Bigstick.BuildingBlocks.ObjectStick.Hub;
 using Dapper;
+using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad;
 using Ferreteria.Modules.GestionVentas.Domain.Repository;
@@ -35,25 +36,24 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 var transaction = _sqlTransaction.Transaction;
                 var parameters = new DynamicParameters();
 
-                parameters.Add("@nombre", request.Nombre);
-                parameters.Add("@descripcion", request.Descripcion);
-                parameters.Add("@sku", request.Sku);
-                parameters.Add("@marca", request.Marca);
-                parameters.Add("@modelo", request.Modelo);
-                parameters.Add("@unidad", request.Unidad);
-                parameters.Add("@categoria", request.Categoria);
-                parameters.Add("@subcategoria", request.Subcategoria);
-                parameters.Add("@impuestoTipo", request.ImpuestoTipo);
-                parameters.Add("@precio", request.Precio);
-                parameters.Add("@cantidad", request.Cantidad);
-                parameters.Add("@costo", request.Costo);
-                parameters.Add("@proveedor", request.Proveedor);
-                parameters.Add("@codigoBarras", request.CodigoBarras);
-                parameters.Add("@usuarioCreacion", request.UsuarioCreacion);
-                parameters.Add("@FechaCreacion", request.FechaCreacion);
+                parameters.Add("@Nombre", request.Nombre);
+                parameters.Add("@Descripcion", request.Descripcion);
+                parameters.Add("@Sku", request.Sku);
+                parameters.Add("@Marca", request.Marca);
+                parameters.Add("@Modelo", request.Modelo);
+                parameters.Add("@UnidadMedida", request.Unidad); 
+                parameters.Add("@Categoria", request.Categoria); 
+                parameters.Add("@Subcategoria", request.Subcategoria);
+                parameters.Add("@ImpuestoTipo", request.ImpuestoTipo);
+                parameters.Add("@PrecioUnitario", request.Precio);
+                parameters.Add("@Stock", request.Cantidad); 
+                parameters.Add("@Costo", request.Costo);
+                parameters.Add("@Proveedor", request.Proveedor);
+                parameters.Add("@CodigoBarra", request.CodigoBarras);
+                parameters.Add("@UsuarioCreacion", request.UsuarioCreacion);
 
                 return await connection.ExecuteAsync(
-                    "[dbo].[usp_CrearProducto]",
+                    "[fer].[usp_CrearProducto]",
                     parameters,
                     transaction,
                     commandType: CommandType.StoredProcedure
@@ -74,11 +74,24 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
 
                 parameters.Add("@total", dbType: DbType.Int32, direction: ParameterDirection.Output);
 
-                var query = await _connection.QueryAsync<ProductoDTO>("[dbo].[usp_ObtenerProductos]", parameters, commandType: CommandType.StoredProcedure);
+                var query = await _connection.QueryAsync<ProductoDTO>("[fer].[usp_ObtenerProductos]", parameters, commandType: CommandType.StoredProcedure);
                 var total = parameters.Get<int>("@total");
 
                 return (query, total);
             }
+        }
+        public async Task<IEnumerable<CategoriasLiteDTO>> GetCategoriaLite()
+        {
+            using var connection = sqlConnectionFactory.CreateNewConnection();
+
+            const string storedProcedure = "[fer].[usp_ObtenerCategoriasLite]";
+
+            var result = await connection.QueryAsync<CategoriasLiteDTO>(
+                storedProcedure,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
         }
     }
 }
