@@ -12,5 +12,6 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Repository
         Task<int> CrearProducto(CrearProductoRequest request);
         Task<(IEnumerable<ProductoDTO>, int)> ProductoGet(string nombre, string categoria, string proveedor, int startAt, int maxResult);
         Task<IEnumerable<CategoriasLiteDTO>> GetCategoriaLite();
+        Task<IEnumerable<ProveedorLiteDTO>> GetProveedorLite();
     }
 }

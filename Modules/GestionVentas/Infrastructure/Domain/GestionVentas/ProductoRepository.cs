@@ -93,5 +93,18 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
 
             return result;
         }
+        public async Task<IEnumerable<ProveedorLiteDTO>> GetProveedorLite()
+        {
+            using var connection = sqlConnectionFactory.CreateNewConnection();
+
+            const string storedProcedure = "[fer].[usp_GetProveedoresLite]";
+
+            var result = await connection.QueryAsync<ProveedorLiteDTO>(
+                storedProcedure,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
     }
 }

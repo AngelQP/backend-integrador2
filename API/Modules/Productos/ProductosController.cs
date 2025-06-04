@@ -3,6 +3,7 @@ using Ferreteria.Modules.GestionVentas.Application.Contract;
 using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
+using Ferreteria.Modules.GestionVentas.Application.Producto.GetProveedores;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
 using Microsoft.AspNetCore.Authorization;
@@ -86,6 +87,12 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
             var result = await _producto.ExecuteQueryAsync(filters);
             return Ok(result);
         }
-
+        [HttpGet("ProveedoresLite")]
+        public async Task<IActionResult> GetProveedorLite(CancellationToken cancellationToken)
+        {
+            var filters = new GetProveedoresFilters();
+            var result = await _producto.ExecuteQueryAsync(filters);
+            return Ok(result);
+        }
     }
 }
