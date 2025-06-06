@@ -4,7 +4,6 @@ using Bigstick.BuildingBlocks.ObjectStick.Hub;
 using Dapper;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
-using Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad;
 using Ferreteria.Modules.GestionVentas.Domain.Repository;
 using IdentityModel.Client;
 using System;
@@ -41,15 +40,15 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 parameters.Add("@Sku", request.Sku);
                 parameters.Add("@Marca", request.Marca);
                 parameters.Add("@Modelo", request.Modelo);
-                parameters.Add("@UnidadMedida", request.Unidad); 
+                parameters.Add("@UnidadMedida", request.UnidadMedida); 
                 parameters.Add("@Categoria", request.Categoria); 
                 parameters.Add("@Subcategoria", request.Subcategoria);
                 parameters.Add("@ImpuestoTipo", request.ImpuestoTipo);
-                parameters.Add("@PrecioUnitario", request.Precio);
-                parameters.Add("@Stock", request.Cantidad); 
+                parameters.Add("@PrecioUnitario", request.PrecioUnitario);
+                parameters.Add("@Stock", request.Stock); 
                 parameters.Add("@Costo", request.Costo);
                 parameters.Add("@Proveedor", request.Proveedor);
-                parameters.Add("@CodigoBarra", request.CodigoBarras);
+                parameters.Add("@CodigoBarra", request.CodigoBarra);
                 parameters.Add("@UsuarioCreacion", request.UsuarioCreacion);
 
                 return await connection.ExecuteAsync(
@@ -106,5 +105,51 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
 
             return result;
         }
+        public async Task<ProductoDTO> ProductGetById(int idProducto)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@idProducto", idProducto);
+
+                return await connection.QueryFirstOrDefaultAsync<ProductoDTO>("[fer].[usp_ObtenerProductoPorId]", parameters, transaction, commandType: CommandType.StoredProcedure);
+            }
+        }
+        public async Task<int> ActualizarProducto(ActualizarProductoRequest request)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+                var parameters = new DynamicParameters();
+
+                parameters.Add("@IdProducto", request.IdProducto);
+                parameters.Add("@Nombre", request.Nombre);
+                parameters.Add("@Descripcion", request.Descripcion);
+                parameters.Add("@PrecioUnitario", request.PrecioUnitario);
+                parameters.Add("@Stock", request.Stock);
+                parameters.Add("@Categoria", request.Categoria);
+                parameters.Add("@CodigoBarra", request.CodigoBarra);
+                parameters.Add("@UnidadMedida", request.UnidadMedida);
+                parameters.Add("@EstadoRegistro", request.EstadoRegistro);
+                parameters.Add("@Sku", request.Sku);
+                parameters.Add("@Marca", request.Marca);
+                parameters.Add("@Modelo", request.Modelo);
+                parameters.Add("@Subcategoria", request.Subcategoria);
+                parameters.Add("@ImpuestoTipo", request.ImpuestoTipo);
+                parameters.Add("@Costo", request.Costo);
+                parameters.Add("@Proveedor", request.Proveedor);
+                parameters.Add("@UsuarioActualizacion", request.UsuarioActualizacion);
+
+                return await connection.ExecuteAsync(
+                    "[fer].[usp_ActualizarProducto]",
+                    parameters,
+                    transaction,
+                    commandType: System.Data.CommandType.StoredProcedure
+                );
+            }
+        }
+
     }
 }

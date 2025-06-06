@@ -4,6 +4,9 @@ using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProveedores;
+using Ferreteria.Modules.GestionVentas.Application.Producto.ProductGetById;
+using Ferreteria.Modules.GestionVentas.Application.Producto.ProductoUpdate;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserGetById;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
 using Microsoft.AspNetCore.Authorization;
@@ -51,15 +54,15 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
                 request.Sku,
                 request.Marca,
                 request.Modelo,
-                request.Unidad,
+                request.UnidadMedida,
                 request.Categoria,
                 request.Subcategoria,
                 request.ImpuestoTipo,
-                request.Precio,
-                request.Cantidad,
+                request.PrecioUnitario,
+                request.Stock,
                 request.Costo,
                 request.Proveedor,
-                request.CodigoBarras,
+                request.CodigoBarra,
                 request.UsuarioCreacion,
                 request.FechaCreacion,
                 request.Estado
@@ -93,6 +96,37 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
             var filters = new GetProveedoresFilters();
             var result = await _producto.ExecuteQueryAsync(filters);
             return Ok(result);
+        }
+        [HttpGet("productos/{id}")]
+        public async Task<IActionResult> ProductGetById(int id)
+        {
+            return Ok(await _producto.ExecuteQueryAsync(new ProductGetByIdQuery(id)));
+        }
+        [HttpPut("productos/{id}")]
+        public async Task<IActionResult> ProductoUpdate(int id, [FromBody] ProductoRequest request)
+        {
+            var command = new ProductoUpdateCommand(
+                id,
+                request.Nombre,
+                request.Descripcion,
+                request.PrecioUnitario,
+                request.Stock,
+                request.Categoria,
+                request.CodigoBarra,
+                request.UnidadMedida,
+                request.Estado,
+                request.Sku,
+                request.Marca,
+                request.Modelo,
+                request.Subcategoria,
+                request.ImpuestoTipo,
+                request.Costo,
+                request.Proveedor,
+                request.UsuarioCreacion
+
+            );
+
+            return Ok(await _producto.ExecuteCommandAsync(command));
         }
     }
 }
