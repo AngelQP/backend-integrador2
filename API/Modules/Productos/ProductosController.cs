@@ -1,5 +1,6 @@
 ﻿using Bigstick.BuildingBlocks.HttpClient.OData;
 using Ferreteria.Modules.GestionVentas.Application.Contract;
+using Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote;
 using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
@@ -124,6 +125,27 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
                 request.Proveedor,
                 request.UsuarioCreacion
 
+            );
+
+            return Ok(await _producto.ExecuteCommandAsync(command));
+        }
+        [AllowAnonymous]
+        [HttpPost("lote")]
+        public async Task<ActionResult> LoteCreate(LoteRequest request)
+        {
+            var command = new CrearLoteComand(
+                request.IdProducto,
+                request.NumeroLote,
+                request.FechaIngreso,
+                request.FechaFabricacion,
+                request.FechaVencimiento,
+                request.CantidadInicial,
+                request.CantidadDisponible,
+                request.CostoUnitario,
+                request.EstadoRegistro,
+                request.UsuarioCreacion,
+                request.FechaCreacion,
+                request.IdProveedor
             );
 
             return Ok(await _producto.ExecuteCommandAsync(command));

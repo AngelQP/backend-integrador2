@@ -150,6 +150,33 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 );
             }
         }
+        public async Task<int> CrearLote(CrearLoteRequest request)
+        {
+            using (var connection = sqlConnectionFactory.CreateNewConnection())
+            {
+                var transaction = _sqlTransaction.Transaction;
+                var parameters = new DynamicParameters();
+
+                parameters.Add("@IdProducto", request.IdProducto);
+                parameters.Add("@NumeroLote", request.NumeroLote);
+                parameters.Add("@FechaIngreso", request.FechaIngreso);
+                parameters.Add("@FechaFabricacion", request.FechaFabricacion);
+                parameters.Add("@FechaVencimiento", request.FechaVencimiento);
+                parameters.Add("@CantidadInicial", request.CantidadInicial);
+                parameters.Add("@CantidadDisponible", request.CantidadDisponible);
+                parameters.Add("@CostoUnitario", request.CostoUnitario);
+                parameters.Add("@UsuarioCreacion", request.UsuarioCreacion);
+                parameters.Add("@FechaCreacion", request.FechaCreacion);
+                parameters.Add("@IdProveedor", request.IdProveedor);
+
+                return await connection.ExecuteAsync(
+                    "[fer].[usp_CrearLote]",
+                    parameters,
+                    transaction,
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
 
     }
 }
