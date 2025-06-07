@@ -1,7 +1,7 @@
 ﻿using Bigstick.BuildingBlocks.HttpClient.OData;
 using Ferreteria.Modules.GestionVentas.Application.Contract;
-using Ferreteria.Modules.GestionVentas.Application.Proveedores.CrearProveedor;
-using Ferreteria.Modules.GestionVentas.Application.Proveedores.GetProveedor;
+using Ferreteria.Modules.GestionVentas.Application.Proveedor.CrearProveedor;
+using Ferreteria.Modules.GestionVentas.Application.Proveedor.GetProveedor;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Proveedor;
 using Microsoft.AspNetCore.Authorization;
