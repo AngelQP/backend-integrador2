@@ -39,7 +39,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Proveedores
         [HttpPost("Proveedor")]
         public async Task<ActionResult> ProveedorCreate(ProveedoresRequest request)
         {
-            var command = new CrearProveedorComand(
+            var command = new CrearProveedorCommand(
                 request.Nombre,
                 request.Ruc,
                 request.Direccion,
@@ -56,7 +56,7 @@ namespace Ferreteria.GestionVentas.API.Modules.Proveedores
             var filtro = new GetProveedorFilters(nombre, ruc, correo, contacto);
             var query = new QueryPagination<ProveedorGetDTO, GetProveedorFilters>(startAt, maxResult, filtro);
 
-            return Ok(await _proveedor.ExecuteQueryAsync(query));
+            return Ok(await _proveedores.ExecuteQueryAsync(query));
         }
     }
 }
