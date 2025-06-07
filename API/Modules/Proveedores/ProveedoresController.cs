@@ -45,6 +45,8 @@ namespace Ferreteria.GestionVentas.API.Modules.Proveedores
                 request.Direccion,
                 request.Telefono,
                 request.Correo,
+                request.Contacto,
+                request.Estado,
                 request.FechaRegistro
             );
             return Ok(await _proveedores.ExecuteCommandAsync(command));
