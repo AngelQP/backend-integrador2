@@ -8,16 +8,17 @@ using System.Threading.Tasks;
 namespace Ferreteria.Modules.GestionVentas.Application.Proveedor.GetProveedor
 {
     public class ProveedorGetDTO
-    {
-        public ProveedorGetDTO(IEnumerable<ProveedorDTO> proveedor, int startAt, int maxResult, int total)
+    {   
+        public class ProveedorItem
         {
-            Proveedor = proveedor;
-            StartAt = startAt;
-            MaxResult = maxResult;
-            Total = total;
-        }
-        
-        public IEnumerable<ProveedorDTO> Proveedor { get; }
+            public int Id { get; set; }
+            public string? Nombre { get; set; }
+            public string? Ruc { get; set; }
+            public string? Correo { get; set; }
+            public string? Contacto { get; set; }
+            public DateTime FechaRegistro { get; set; }
+        }    
+        public IEnumerable<ProveedorItem> Items { get; }
         public int StartAt { get; }
         public int MaxResult { get; }
         public int Total { get; }
