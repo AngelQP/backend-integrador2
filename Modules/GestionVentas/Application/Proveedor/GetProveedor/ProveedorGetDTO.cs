@@ -18,9 +18,9 @@ namespace Ferreteria.Modules.GestionVentas.Application.Proveedor.GetProveedor
             public string? Contacto { get; set; }
             public DateTime FechaRegistro { get; set; }
         }    
-        public IEnumerable<ProveedorItem> Items { get; }
-        public int StartAt { get; }
-        public int MaxResult { get; }
-        public int Total { get; }
+        public IEnumerable<ProveedorItem> Items { get; set }
+        public int StartAt { get; set; }
+        public int MaxResult { get; set; }
+        public int Total { get; set; }
     }
 }
