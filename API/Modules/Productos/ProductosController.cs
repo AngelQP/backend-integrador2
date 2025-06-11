@@ -5,8 +5,10 @@ using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProveedores;
+using Ferreteria.Modules.GestionVentas.Application.Producto.Notification;
 using Ferreteria.Modules.GestionVentas.Application.Producto.ProductGetById;
 using Ferreteria.Modules.GestionVentas.Application.Producto.ProductoUpdate;
+using Ferreteria.Modules.GestionVentas.Application.Seguridad.ForgotPassword;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UserGetById;
 using Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
@@ -150,5 +152,11 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
 
             return Ok(await _producto.ExecuteCommandAsync(command));
         }
+        [HttpPost("notificar")]
+        public async Task<ActionResult> AuthForgotPassword(NotificationRequest request)
+        {
+            return Ok(await _producto.ExecuteCommandAsync(new NotificationCommand(request.Correo, request.IdProducto)));
+        }
+
     }
 }
