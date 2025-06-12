@@ -1,10 +1,12 @@
 ﻿using Bigstick.BuildingBlocks.Application.Response;
 using Ferreteria.Modules.GestionVentas.Application.Configuration.Command;
 using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
+using Ferreteria.Modules.GestionVentas.Application.Producto.Notification;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Producto;
 using Ferreteria.Modules.GestionVentas.Domain.Repository;
 using Ferreteria.Modules.GestionVentas.Domain.Servicios;
 using Ferreteria.Modules.GestionVentas.Domain.Users;
+using MediatR;
 using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
@@ -20,12 +22,14 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
         private readonly IProductoRepository _productoRepository;
         private readonly ICommonService _commonService;
         private readonly IUserContext _userContext;
+        private readonly IMediator _mediator;
 
-        public CrearLoteComandHandler(IProductoRepository productoRepository, ICommonService commonService, IUserContext userContext)
+        public CrearLoteComandHandler(IProductoRepository productoRepository, ICommonService commonService, IUserContext userContext, IMediator mediator)
         {
             _productoRepository = productoRepository;
             _commonService = commonService;
             _userContext = userContext;
+            _mediator = mediator;
         }
 
         public async Task<RequestResult> Handle(CrearLoteComand request, CancellationToken cancellationToken)
@@ -43,7 +47,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
                 CostoUnitario = request.CostoUnitario,
                 UsuarioCreacion = usuario,
                 FechaCreacion = DateTime.UtcNow,
-                IdProveedor = request.IdProveedor
+                IdProveedor = request.IdProveedor,
+                UsuariosNotificados = request.UsuariosNotificados,
             });
             var producto = await _productoRepository.ProductGetById(request.IdProducto);
             if (producto == null)
@@ -52,7 +57,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
             }
             producto.Stock += (int)request.CantidadInicial;
 
-            // 4. Actualizar el producto con el nuevo stock
+           
+
             await _productoRepository.ActualizarProducto(new ActualizarProductoRequest
             {
                 IdProducto = producto.IdProducto,
@@ -72,6 +78,13 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
                 Costo = producto.Costo,
                 Proveedor = producto.Proveedor,
             });
+            if (request.UsuariosNotificados != null)
+            {
+                foreach (var correo in request.UsuariosNotificados)
+                {
+                    await _mediator.Send(new NotificationCommand(correo, request.IdProducto));
+                }
+            }
             return RequestResult.Success();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferreteria.GestionVentas.API.Modules.Productos
 {
@@ -16,5 +17,6 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
         public string UsuarioCreacion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int? IdProveedor { get; set; }
+        public List<string> UsuariosNotificados { get; set; } = new();
     }
 }

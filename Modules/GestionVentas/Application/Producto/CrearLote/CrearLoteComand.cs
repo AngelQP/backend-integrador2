@@ -22,7 +22,8 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
             string estadoRegistro,
             string usuarioCreacion,
             DateTime fechaCreacion,
-            int? idProveedor)
+            int? idProveedor,
+            List<string> usuariosNotificados)
         {
             IdProducto = idProducto;
             NumeroLote = numeroLote;
@@ -36,6 +37,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
             UsuarioCreacion = usuarioCreacion;
             FechaCreacion = fechaCreacion;
             IdProveedor = idProveedor;
+            UsuariosNotificados = usuariosNotificados ?? new List<string>();
         }
 
         public int IdProducto { get; set; }
@@ -50,5 +52,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
         public string UsuarioCreacion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int? IdProveedor { get; set; }
+        public List<string> UsuariosNotificados { get; set; } = new List<string>();
+
     }
 }

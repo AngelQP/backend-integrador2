@@ -19,5 +19,6 @@ namespace Ferreteria.Modules.GestionVentas.Domain.DTO.Producto
         public string UsuarioCreacion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int? IdProveedor { get; set; }
+        public List<string>? UsuariosNotificados { get; set; }
     }
 }

@@ -148,7 +148,9 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
                 request.EstadoRegistro,
                 request.UsuarioCreacion,
                 request.FechaCreacion,
-                request.IdProveedor
+                request.IdProveedor,
+                request.UsuariosNotificados
+
             );
 
             return Ok(await _producto.ExecuteCommandAsync(command));
