@@ -78,7 +78,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Producto.CrearLote
                 Costo = producto.Costo,
                 Proveedor = producto.Proveedor,
             });
-            if (request.UsuariosNotificados != null)
+            if (producto.Stock < 5 && request.UsuariosNotificados != null)
             {
                 foreach (var correo in request.UsuariosNotificados)
                 {
