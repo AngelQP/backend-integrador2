@@ -177,6 +177,19 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
                 );
             }
         }
+        public async Task<IEnumerable<UsuariosLiteDTO>> GetUsuarioLite()
+        {
+            using var connection = sqlConnectionFactory.CreateNewConnection();
+
+            const string storedProcedure = "[fer].[usp_ObtenerUsuariosFiltrados]";
+
+            var result = await connection.QueryAsync<UsuariosLiteDTO>(
+                storedProcedure,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return result;
+        }
 
     }
 }

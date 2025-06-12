@@ -5,6 +5,7 @@ using Ferreteria.Modules.GestionVentas.Application.Producto.CrearProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetCategorias;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProducto;
 using Ferreteria.Modules.GestionVentas.Application.Producto.GetProveedores;
+using Ferreteria.Modules.GestionVentas.Application.Producto.GetUsuarioLite;
 using Ferreteria.Modules.GestionVentas.Application.Producto.Notification;
 using Ferreteria.Modules.GestionVentas.Application.Producto.ProductGetById;
 using Ferreteria.Modules.GestionVentas.Application.Producto.ProductoUpdate;
@@ -156,6 +157,13 @@ namespace Ferreteria.GestionVentas.API.Modules.Productos
         public async Task<ActionResult> AuthForgotPassword(NotificationRequest request)
         {
             return Ok(await _producto.ExecuteCommandAsync(new NotificationCommand(request.Correo, request.IdProducto)));
+        }
+        [HttpGet("UsuariosLite")]
+        public async Task<IActionResult> GetUsuarioLite(CancellationToken cancellationToken)
+        {
+            var filters = new GetUsuariosLiteFilters();
+            var result = await _producto.ExecuteQueryAsync(filters);
+            return Ok(result);
         }
 
     }

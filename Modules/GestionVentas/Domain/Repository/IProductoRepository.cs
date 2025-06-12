@@ -16,5 +16,6 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Repository
         Task<ProductoDTO> ProductGetById(int idProducto);
         public Task<int> ActualizarProducto(ActualizarProductoRequest request);
         Task<int> CrearLote(CrearLoteRequest request);
+        Task<IEnumerable<UsuariosLiteDTO>> GetUsuarioLite();
     }
 }
