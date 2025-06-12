@@ -1,6 +1,10 @@
 ﻿using Bigstick.BuildingBlocks.Application.Response;
+using Ferreteria.Comunications.Application.Core.Mail;
+using Ferreteria.Comunications.Application.Core.Mail.DTO;
 using Ferreteria.Modules.GestionVentas.Application.Configuration.Command;
 using Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad;
+using Ferreteria.Modules.GestionVentas.Domain.Enums;
+using Ferreteria.Modules.GestionVentas.Domain.Plantillas;
 using Ferreteria.Modules.GestionVentas.Domain.Repository;
 using Ferreteria.Modules.GestionVentas.Domain.Servicios;
 using Ferreteria.Modules.GestionVentas.Domain.Users;
@@ -18,12 +22,14 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
         private readonly ISeguridadRepository _seguridadRepository;
         private readonly ICommonService _commonService;
         private readonly IUserContext _userContext;
+        private readonly IMailService _mailService;
 
-        public CrearUsuarioCommandHandler(ISeguridadRepository seguridadRepository, ICommonService commonService, IUserContext userContext)
+        public CrearUsuarioCommandHandler(ISeguridadRepository seguridadRepository, ICommonService commonService, IUserContext userContext, IMailService mailService)
         {
             _seguridadRepository = seguridadRepository;
             _commonService = commonService;
             _userContext = userContext;
+            _mailService = mailService;
         }
 
         public async Task<RequestResult> Handle(CrearUsuarioCommand request, CancellationToken cancellationToken)
@@ -62,7 +68,39 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.CrearUsuario
                 UsuarioCreacion = usuario
             });
 
+            await EnviarCorreoBienvenida(request);
+
             return new RequestResult();
+        }
+
+        private async Task<RequestResult> EnviarCorreoBienvenida(CrearUsuarioCommand request)
+        {
+            string rolDescripcion = "Desconocido";
+            string sociedadDescripcion = "Desconocido";
+
+            if (Enum.TryParse<RolUsuario>(request.Rol, out var rolEnum))
+                rolDescripcion = rolEnum.ToDescripcion();
+
+            if (Enum.TryParse<Sociedad>(request.Sociedad, out var sociedadEnum))
+                sociedadDescripcion = sociedadEnum.ToDescripcion();
+
+            var html = PlantillasHtml.ObtenerCorreoRegistroUsuario()
+                .Replace("{{NOMBRE}}", $"{request.Nombre}")
+                .Replace("{{CORREO}}", request.Correo)
+                .Replace("{{ROL}}", rolDescripcion)
+                .Replace("{{SOCIEDAD}}", sociedadDescripcion)
+                .Replace("{{FECHA_HORA}}", DateTime.Now.ToString("dd/MM/yyyy HH:mm"))
+                .Replace("{{ANIO}}", DateTime.Now.Year.ToString());
+
+            var emailRequest = new EmailRequest
+            {
+                TO = new List<string> { request.Correo },
+                Subject = "Ferretería - Registro de Usuario Exitoso",
+                Body = html,
+                IsBodyHtml = true
+            };
+
+            return await _mailService.Send(emailRequest);
         }
     }
 }

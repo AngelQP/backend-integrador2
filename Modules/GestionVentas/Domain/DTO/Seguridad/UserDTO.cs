@@ -10,6 +10,7 @@ namespace Ferreteria.Modules.GestionVentas.Domain.DTO.Seguridad
     {
         public int IdUsuario { get; set; }
         public string Sociedad { get; set; }
+        public string SociedadNombre { get; set; }
         public string Usuario { get; set; }
         public string Correo { get; set; }
         public string Nombre { get; set; }

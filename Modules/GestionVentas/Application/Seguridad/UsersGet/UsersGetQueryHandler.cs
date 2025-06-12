@@ -36,6 +36,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet
 
             foreach (var usuario in result.Item1)
             {
+                usuario.SociedadNombre = Enum.Parse<Sociedad>(usuario.Sociedad).ToDescripcion();
                 usuario.RolNombre = Enum.Parse<RolUsuario>(usuario.Rol).ToDescripcion();
                 usuario.EstadoNombre = ((EstadoRegistro)usuario.EstadoRegistro).ToDescripcion();
             }

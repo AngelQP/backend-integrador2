@@ -45,4 +45,27 @@ namespace Ferreteria.Modules.GestionVentas.Domain.Enums
             };
         }
     }
+
+    public enum Sociedad
+    {
+        ANY,
+        S1,
+        S2,
+        S3
+    }
+
+    public static class SociedadExtensions
+    {
+        public static string ToDescripcion(this Sociedad sociedad)
+        {
+            return sociedad switch
+            {
+                Sociedad.ANY => "Todas las sociedades",
+                Sociedad.S1 => "Ferreteria Juanito",
+                Sociedad.S2 => "Ferretería Ochoa",
+                Sociedad.S3 => "La Casa del Tornillo",
+                _ => "Desconocido"
+            };
+        }
+    }
 }

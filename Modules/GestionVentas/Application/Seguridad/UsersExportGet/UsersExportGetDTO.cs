@@ -8,6 +8,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersExportGet
 {
     public class UsersExportGetDTO
     {
+        public string Sociedad { get; set; }
         public string Usuario { get; set; }
         public string Correo { get; set; }
         public string Nombre { get; set; }

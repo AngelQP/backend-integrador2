@@ -29,12 +29,14 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersExportGet
 
             foreach (var usuario in result.Item1)
             {
+                usuario.SociedadNombre = Enum.Parse<Sociedad>(usuario.Sociedad).ToDescripcion();
                 usuario.RolNombre = Enum.Parse<RolUsuario>(usuario.Rol).ToDescripcion();
                 usuario.EstadoNombre = ((EstadoRegistro)usuario.EstadoRegistro).ToDescripcion();
             }
 
             var response = result.Item1.Select(x => new UsersExportGetDTO
             {
+                Sociedad = x.SociedadNombre,
                 Usuario = x.Usuario,
                 Nombre = x.Nombre,
                 ApellidoPaterno = x.ApellidoPaterno,
