@@ -9,8 +9,9 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersExportGet
 {
     public class UsersExportGetQuery : IQuery<byte[]>
     {
-        public UsersExportGetQuery(string nombre, string rol, int? estado, int startAt, int maxResult)
+        public UsersExportGetQuery(string sociedad, string nombre, string rol, int? estado, int startAt, int maxResult)
         {
+            Sociedad = sociedad;
             Nombre = nombre;
             Rol = rol;
             Estado = estado;
@@ -18,6 +19,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersExportGet
             MaxResult = maxResult;
         }
 
+        public string Sociedad { get; }
         public string Nombre { get; }
         public string Rol { get; }
         public int? Estado { get; }

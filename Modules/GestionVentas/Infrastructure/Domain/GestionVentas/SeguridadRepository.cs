@@ -132,11 +132,12 @@ namespace Ferreteria.Modules.GestionVentas.Infrastructure.Domain.GestionVentas
             }
         }
 
-        public async Task<(IEnumerable<UserDTO>, int)> UsersGet(string nombre, string rol, int? estado, int startAt, int maxResult)
+        public async Task<(IEnumerable<UserDTO>, int)> UsersGet(string sociedad, string nombre, string rol, int? estado, int startAt, int maxResult)
         {
             using (var _connection = sqlConnectionFactory.CreateNewConnection())
             {
                 var parameters = new DynamicParameters();
+                parameters.Add("@sociedad", sociedad);
                 parameters.Add("@nombre", nombre);
                 parameters.Add("@rol", rol);
                 parameters.Add("@estado", estado);

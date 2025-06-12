@@ -59,15 +59,15 @@ namespace Ferreteria.GestionVentas.API.Modules.Seguridad
         }
 
         [HttpGet("usuarios")]
-        public async Task<IActionResult> UsersGet([FromQuery] string nombre, string rol, int? estado, int startAt, int maxResult)
+        public async Task<IActionResult> UsersGet([FromQuery] string sociedad, string nombre, string rol, int? estado, int startAt, int maxResult)
         {
-            return Ok(await _seguridad.ExecuteQueryAsync(new UsersGetQuery(nombre, rol, estado, startAt, maxResult)));
+            return Ok(await _seguridad.ExecuteQueryAsync(new UsersGetQuery(sociedad, nombre, rol, estado, startAt, maxResult)));
         }
 
         [HttpGet("usuarios/exportar")]
-        public async Task<IActionResult> UsersExportGet([FromQuery] string nombre, string rol, int? estado)
+        public async Task<IActionResult> UsersExportGet([FromQuery] string sociedad, string nombre, string rol, int? estado)
         {
-            var result = await _seguridad.ExecuteQueryAsync(new UsersExportGetQuery(nombre, rol, estado, 1, 65000));
+            var result = await _seguridad.ExecuteQueryAsync(new UsersExportGetQuery(sociedad, nombre, rol, estado, 1, 65000));
 
             var mimeType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 

@@ -32,7 +32,7 @@ namespace Ferreteria.Modules.GestionVentas.Application.Seguridad.UsersGet
 
         public async Task<RequestResult> Handle(UsersGetQuery request, CancellationToken cancellationToken)
         {
-            var result = await _seguridadRepository.UsersGet(request.Nombre, request.Rol, request.Estado, request.StartAt, request.MaxResult);
+            var result = await _seguridadRepository.UsersGet(request.Sociedad, request.Nombre, request.Rol, request.Estado, request.StartAt, request.MaxResult);
 
             foreach (var usuario in result.Item1)
             {
